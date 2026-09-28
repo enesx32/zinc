@@ -1,10 +1,14 @@
 [bits 16]
 [org 0x7c00]
 
-KERNEL_OFFSET equ 0x8000
+KERNEL_OFFSET equ 0x7e00
 KERNEL_DEST   equ 0x100000
 
 start:
+    jmp 0x0000:normalize
+
+normalize:
+    cli
     xor ax, ax
     mov ds, ax
     mov es, ax
@@ -12,11 +16,11 @@ start:
     mov sp, 0x7c00
     cld
 
-    mov [BOOT_DRIVE], dl
+    in al, 0x92
+    or al, 2
+    and al, 0xfe
+    out 0x92, al
 
-    call load_kernel
-
-    cli
     lgdt [gdt_descriptor]
 
     mov eax, cr0
@@ -24,25 +28,6 @@ start:
     mov cr0, eax
 
     jmp CODE32_SEG:init_pm32
-
-load_kernel:
-    mov bx, KERNEL_OFFSET
-    mov dl, [BOOT_DRIVE]
-    mov ah, 0x02
-    mov al, 64
-    mov ch, 0x00
-    mov dh, 0x00
-    mov cl, 0x02
-    int 0x13
-    jc disk_error
-    ret
-
-disk_error:
-    cli
-    hlt
-    jmp disk_error
-
-BOOT_DRIVE db 0
 
 [bits 32]
 init_pm32:
