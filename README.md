@@ -74,15 +74,23 @@ cd zinc
 ## Project layout
 ```
 zinc/
+├── .cargo/
+│   └── config.toml
 ├── boot/
-│   └── boot.asm        bootloader (BIOS boot sector)
+│   └── boot.asm        
 ├── kernel/
-│   ├── src/main.rs     the kernel
-│   ├── linker.ld       puts the kernel at 0x100000
+│   ├── src/
+│   │   └──main.rs     
+│   ├── linker.ld       
 │   └── Cargo.toml
-├── build.sh            builds the kernel into a raw binary
-├── run.sh              builds the ISO and runs it in QEMU
-├── make_iso.py         builds the bootable ISO
+├──.gitignore
+├── build.sh  
+├── Cargo.lock
+├── export-vm.sh
+├── README.md
+├── x86_64-zinc.json          
+├── run.sh              
+├── isogen.py         
 └── Cargo.toml
 ```
 
