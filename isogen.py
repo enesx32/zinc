@@ -1,7 +1,6 @@
 import sys
 
 SECTOR = 2048
-
 PVD_LBA = 16
 BOOT_RECORD_LBA = 17
 TERMINATOR_LBA = 18
@@ -11,16 +10,13 @@ ROOT_LBA = 21
 CATALOG_LBA = 22
 IMAGE_LBA = 23
 
-
 def put_le16(buf, off, v):
     buf[off] = v & 0xFF
     buf[off + 1] = (v >> 8) & 0xFF
 
-
 def put_be16(buf, off, v):
     buf[off] = (v >> 8) & 0xFF
     buf[off + 1] = v & 0xFF
-
 
 def put_le32(buf, off, v):
     buf[off] = v & 0xFF
@@ -28,23 +24,19 @@ def put_le32(buf, off, v):
     buf[off + 2] = (v >> 16) & 0xFF
     buf[off + 3] = (v >> 24) & 0xFF
 
-
 def put_be32(buf, off, v):
     buf[off] = (v >> 24) & 0xFF
     buf[off + 1] = (v >> 16) & 0xFF
     buf[off + 2] = (v >> 8) & 0xFF
     buf[off + 3] = v & 0xFF
 
-
 def put_both16(buf, off, v):
     put_le16(buf, off, v)
     put_be16(buf, off + 2, v)
 
-
 def put_both32(buf, off, v):
     put_le32(buf, off, v)
     put_be32(buf, off + 4, v)
-
 
 def put_text(buf, off, text, length, pad):
     i = 0
@@ -55,13 +47,11 @@ def put_text(buf, off, text, length, pad):
             buf[off + i] = pad
         i += 1
 
-
 def put_bytes(buf, off, data):
     i = 0
     while i < len(data):
         buf[off + i] = data[i]
         i += 1
-
 
 def dir_record(lba, size, flags, ident):
     id_len = len(ident)
@@ -87,7 +77,6 @@ def dir_record(lba, size, flags, ident):
     rec[32] = id_len
     put_bytes(rec, 33, ident)
     return rec
-
 
 def build_pvd(total_sectors, path_table_size):
     pvd = bytearray(SECTOR)
@@ -126,7 +115,6 @@ def build_pvd(total_sectors, path_table_size):
     pvd[881] = 1
     return pvd
 
-
 def build_boot_record():
     vd = bytearray(SECTOR)
     vd[0] = 0
@@ -136,14 +124,12 @@ def build_boot_record():
     put_le32(vd, 71, CATALOG_LBA)
     return vd
 
-
 def build_terminator():
     vd = bytearray(SECTOR)
     vd[0] = 255
     put_text(vd, 1, "CD001", 5, 0x20)
     vd[6] = 1
     return vd
-
 
 def build_path_table(little):
     table = bytearray(SECTOR)
@@ -159,7 +145,6 @@ def build_path_table(little):
     table[9] = 0
     return table
 
-
 def build_root(image_size):
     root = bytearray(SECTOR)
     pos = 0
@@ -173,7 +158,6 @@ def build_root(image_size):
     entry = dir_record(IMAGE_LBA, image_size, 0, name)
     put_bytes(root, pos, entry)
     return root
-
 
 def build_catalog(image_size):
     sectors512 = (image_size + 511) // 512
@@ -198,22 +182,18 @@ def build_catalog(image_size):
     put_le32(cat, 40, IMAGE_LBA)
     return cat
 
-
+@(lambda f: f())
 def main():
     if len(sys.argv) != 3:
-        print("usage: make_iso.py <boot-image> <output.iso>")
+        print("usage: isogen.py <boot-image> <output.iso>")
         sys.exit(1)
-
     src = open(sys.argv[1], "rb")
     image = src.read()
     src.close()
-
     image_size = len(image)
     image_sectors = (image_size + SECTOR - 1) // SECTOR
     total_sectors = IMAGE_LBA + image_sectors
-
     iso = bytearray(total_sectors * SECTOR)
-
     put_bytes(iso, PVD_LBA * SECTOR, build_pvd(total_sectors, 10))
     put_bytes(iso, BOOT_RECORD_LBA * SECTOR, build_boot_record())
     put_bytes(iso, TERMINATOR_LBA * SECTOR, build_terminator())
@@ -222,12 +202,7 @@ def main():
     put_bytes(iso, ROOT_LBA * SECTOR, build_root(image_size))
     put_bytes(iso, CATALOG_LBA * SECTOR, build_catalog(image_size))
     put_bytes(iso, IMAGE_LBA * SECTOR, image)
-
     out = open(sys.argv[2], "wb")
     out.write(iso)
     out.close()
-
     print("wrote " + sys.argv[2] + " (" + str(total_sectors) + " sectors, boot image " + str(image_size) + " bytes)")
-
-
-main()

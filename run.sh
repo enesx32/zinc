@@ -6,7 +6,7 @@ set -e
 nasm -f bin boot/boot.asm -o build/boot.bin
 
 cp build/kernel.bin build/kernel_padded.bin
-truncate -s 32k build/kernel_padded.bin
+truncate -s 30k build/kernel_padded.bin
 
 cat build/boot.bin build/kernel_padded.bin > build/boot_image.bin
 
@@ -18,4 +18,5 @@ fi
 
 $PY isogen.py build/boot_image.bin build/zinc-os.iso
 
-qemu-system-x86_64 -cdrom build/zinc-os.iso -no-reboot
+
+qemu-system-x86_64 -cdrom build/zinc-os.iso -boot d

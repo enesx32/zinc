@@ -76,22 +76,38 @@ cd zinc
 zinc/
 ├── .cargo/
 │   └── config.toml
+├── .vscode/
 ├── boot/
-│   └── boot.asm        
+│   └── boot.asm
+├── build/
 ├── kernel/
 │   ├── src/
-│   │   └──main.rs     
-│   ├── linker.ld       
-│   └── Cargo.toml
-├──.gitignore
-├── build.sh  
+│   │   └── main.rs
+│   ├── Cargo.toml
+│   └── linker.ld
+├── target/
+├── zcore/
+│   ├── drivers/
+│   │   ├── src/
+│   │   │   ├── lib.rs
+│   │   │   └── vga_buffer.rs
+│   │   └── Cargo.toml
+│   └── types/
+│       ├── src/
+│       │   ├── lib.rs
+│       │   └── string.rs
+│       └── Cargo.toml
+├── .gitignore
+├── build.sh
 ├── Cargo.lock
+├── Cargo.toml
 ├── export-vm.sh
+├── isogen.py
+├── kernel.asm
 ├── README.md
-├── x86_64-zinc.json          
-├── run.sh              
-├── isogen.py         
-└── Cargo.toml
+├── run.sh
+├── rust-toolchain.toml
+└── x86_64-zinc.json
 ```
 
 ## How it boots
