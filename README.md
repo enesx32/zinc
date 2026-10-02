@@ -101,7 +101,12 @@ zinc/
 │   │   │   ├── lib.rs
 │   │   │   └── vga_buffer.rs
 │   │   └── Cargo.toml
-│   └── types/
+│   ├── types/
+│   │   ├── src/
+│   │   │   ├── lib.rs
+│   │   │   └── string.rs
+│   │   └── Cargo.toml
+│   └── util/
 │       ├── src/
 │       │   ├── lib.rs
 │       │   └── string.rs
