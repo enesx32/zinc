@@ -4,19 +4,24 @@ version = 4
 
 [[package]]
 name = "zcore-drivers"
-version = "2.1.0"
+version = "3.1.0"
 dependencies = [
  "zcore-types",
 ]
 
 [[package]]
 name = "zcore-types"
-version = "2.1.0"
+version = "3.1.0"
+
+[[package]]
+name = "zcore-util"
+version = "3.1.0"
 
 [[package]]
 name = "zinc-kernel"
-version = "2.1.0"
+version = "3.1.0"
 dependencies = [
  "zcore-drivers",
  "zcore-types",
+ "zcore-util",
 ]

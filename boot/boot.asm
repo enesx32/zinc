@@ -7,8 +7,8 @@
 KERNEL_OFFSET equ 0x8400
 ; address (1 MB) where the kernel is copied to and where it expects to run
 KERNEL_DEST   equ 0x100000
-; number of 8-byte chunks to copy, 3840 * 8 = 30 KB
-KERNEL_QWORDS equ 3840
+; number of 8-byte chunks to copy, 8192 * 8 = 64 KB
+KERNEL_QWORDS equ 8192
 ; address of the VGA text buffer
 VGA_BASE      equ 0xb8000
 ; VGA attribute for light green text on black
