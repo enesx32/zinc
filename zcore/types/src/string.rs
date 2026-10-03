@@ -146,7 +146,8 @@ impl<const N: usize> String<N> {
 /// `pub fn to_str(&self) -> &str` will return the string as a str slice<br/>
 /// `pub fn split(&self, delimiter: char) -> [BasicString]` will return a vector of BasicStrings split by the delimiter<br/>
 impl BasicString {
-    pub fn len(&self) -> usize {
+    pub fn len(&self) -> usize
+     {
         self.len
     }
 
