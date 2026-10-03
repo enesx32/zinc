@@ -1,5 +1,5 @@
 # **zinc-os**
-![Version](https://img.shields.io/badge/version-v3.3.0-blue)
+![Version](https://img.shields.io/badge/version-v3.4.0-blue)
 
 A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots from a custom BIOS bootloader, switches the CPU into 64-bit long mode, and runs a Rust kernel
 
@@ -8,11 +8,11 @@ A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots fr
 - Rust kernel
 - VGA text mode output
 - Bootable ISO built by a small Python script, so no `xorriso` or `mkisofs` is needed
+- Custom Native API
 
 ## Native API - Zcore
-The zcore library provides drivers like the VGA buffer and Keyboard drivers<br/>
+The zcore library provides drivers like the VGA buffer, Keyboard and PIT drivers<br/>
 it also gives types for `String` and `Basic String`<br/>
-lastly it has a `zcore/util` folder for general developing stuff
 
 ## How to install
 Download `zinc-os.iso` from the [Releases](https://github.com/enesx32/zinc/releases) page.
@@ -20,10 +20,6 @@ Download `zinc-os.iso` from the [Releases](https://github.com/enesx32/zinc/relea
 ### QEMU
 ```bash
 qemu-system-x86_64 -cdrom zinc-os.iso
-```
-### QEMU + Python
-```bash
-bash run.sh
 ```
 
 ### VirtualBox

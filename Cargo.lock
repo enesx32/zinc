@@ -4,11 +4,11 @@ version = 4
 
 [[package]]
 name = "zcore-constants"
-version = "3.3.0"
+version = "3.4.0"
 
 [[package]]
 name = "zcore-drivers"
-version = "3.3.0"
+version = "3.4.0"
 dependencies = [
  "zcore-constants",
  "zcore-types",
@@ -16,11 +16,11 @@ dependencies = [
 
 [[package]]
 name = "zcore-types"
-version = "3.3.0"
+version = "3.4.0"
 
 [[package]]
 name = "zinc-kernel"
-version = "3.3.0"
+version = "3.4.0"
 dependencies = [
  "zcore-constants",
  "zcore-drivers",
