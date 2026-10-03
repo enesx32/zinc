@@ -1,5 +1,5 @@
 # **zinc-os**
-![Version](https://img.shields.io/badge/version-v3.4.0-blue)
+![Version](https://img.shields.io/badge/version-v3.5.0-blue)
 
 A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots from a custom BIOS bootloader, switches the CPU into 64-bit long mode, and runs a Rust kernel
 

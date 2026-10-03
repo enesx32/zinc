@@ -87,6 +87,54 @@ impl<const N: usize> String<N> {
             core::str::from_utf8_unchecked(&self.data[..self.len])
         }
     }
+
+    pub fn to_u8(&self) -> Option<u8> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u16(&self) -> Option<u16> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u32(&self) -> Option<u32> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u64(&self) -> Option<u64> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u128(&self) -> Option<u128> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_usize(&self) -> Option<usize> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i8(&self) -> Option<i8> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i16(&self) -> Option<i16> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i32(&self) -> Option<i32> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i64(&self) -> Option<i64> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i128(&self) -> Option<i128> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_isize(&self) -> Option<isize> {
+        self.to_str().parse().ok()
+    }
 }
 
 /// Implementations for BasicString
@@ -96,6 +144,7 @@ impl<const N: usize> String<N> {
 /// `pub fn len(&self) -> usize` will return the length of the string<br/>
 /// `pub fn as_bytes(&self) -> &[u8]` will return the string as a byte slice<br/>
 /// `pub fn to_str(&self) -> &str` will return the string as a str slice<br/>
+/// `pub fn split(&self, delimiter: char) -> [BasicString]` will return a vector of BasicStrings split by the delimiter<br/>
 impl BasicString {
     pub fn len(&self) -> usize {
         self.len
@@ -109,5 +158,53 @@ impl BasicString {
         unsafe {
             core::str::from_utf8_unchecked(&self.data[..self.len])
         }
+    }
+
+    pub fn to_u8(&self) -> Option<u8> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u16(&self) -> Option<u16> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u32(&self) -> Option<u32> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u64(&self) -> Option<u64> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_u128(&self) -> Option<u128> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_usize(&self) -> Option<usize> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i8(&self) -> Option<i8> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i16(&self) -> Option<i16> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i32(&self) -> Option<i32> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i64(&self) -> Option<i64> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_i128(&self) -> Option<i128> {
+        self.to_str().parse().ok()
+    }
+
+    pub fn to_isize(&self) -> Option<isize> {
+        self.to_str().parse().ok()
     }
 }
