@@ -17,6 +17,7 @@ use zcore_constants::{
     keys::ENTER_SCANCODE,
     colors::{WHITE, GREEN, LIGHT_BLUE, CYAN},
 };
+use zcore_types::string::BasicString;
 
 /// Number of rows the prompt takes up.
 const PROMPT_ROWS: usize = 3;
@@ -71,10 +72,17 @@ pub extern "C" fn _start() -> ! {
                 // Move to the next row.
                 offset = (offset / BUFFER_WIDTH + 2) * BUFFER_WIDTH;
 
-                // Print the command that was entered.
-                for i in 0..command_length {
-                    write_cell(offset, command[i], WHITE);
-                    offset += 1;
+                // Parse the command into a BasicString and split it into parts.
+                let command_str: &str = unsafe { core::str::from_utf8_unchecked(&command[..command_length]) };
+                let command = BasicString::from(command_str);
+                let split_command = command.split::<6>(b' ');
+
+                if split_command[0].to_str() == "echo" {
+                    print!(offset, split_command[1].to_str(), WHITE);
+                } else if split_command[0].to_str() == "clear" {
+                    clear_screen(0);
+                } else {
+                    println!(offset, "Unknown command", WHITE);
                 }
 
                 // Move to the next row.

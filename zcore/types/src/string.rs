@@ -144,15 +144,47 @@ impl<const N: usize> String<N> {
 /// `pub fn len(&self) -> usize` will return the length of the string<br/>
 /// `pub fn as_bytes(&self) -> &[u8]` will return the string as a byte slice<br/>
 /// `pub fn to_str(&self) -> &str` will return the string as a str slice<br/>
-/// `pub fn split(&self, delimiter: char) -> [BasicString]` will return a vector of BasicStrings split by the delimiter<br/>
+/// `pub fn split<const N: usize>(&self, separator: u8) -> [BasicString; N]` will return an array of BasicStrings split by the delimiter<br/>
 impl BasicString {
-    pub fn len(&self) -> usize
-     {
+    pub fn len(&self) -> usize {
         self.len
     }
 
     pub fn as_bytes(&self) -> &[u8] {
         &self.data[..self.len]
+    }
+
+    pub fn split<const N: usize>(&self, separator: u8) -> [BasicString; N] {
+        let mut parts = core::array::from_fn(|_| BasicString { data: [0u8; 256],len: 0, });
+
+        let mut part = 0;
+        let mut start = 0;
+
+        for i in 0..self.len {
+            if self.data[i] == separator {
+                if part < N {
+                    parts[part] = BasicString::from(
+                        unsafe {
+                            core::str::from_utf8_unchecked(&self.data[start..i])
+                        }
+                    );
+
+                    part += 1;
+                }
+
+                start = i + 1;
+            }
+        }
+
+        if part < N && start <= self.len {
+            parts[part] = BasicString::from(
+                unsafe {
+                    core::str::from_utf8_unchecked(&self.data[start..self.len])
+                }
+            );
+        }
+
+        parts
     }
 
     pub fn to_str(&self) -> &str {

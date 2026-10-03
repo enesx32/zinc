@@ -105,20 +105,20 @@ pub fn clear_screen(start: usize) {
     }
 }
 
-/// draws text starting at cell `offset` and returns the
+/// Draws text starting at cell `offset` and returns the
 /// cell where the next character would go.
 ///
-/// - `offset`: cell index, `row * 80 + column`.
-/// - `text`: the string to draw. A `'\n'` jumps to the start of the next row.
-/// - `color`: one of the color constants, for example `CYAN`.
+/// `text` is a byte slice containing ASCII/UTF-8 bytes.
+///
+/// A `'\n'` jumps to the start of the next row.
 ///
 /// If the text reaches the bottom of the screen, the screen scrolls up one
 /// row and writing continues on the last row.
 ///
-/// This does not touch the global cursor. Normally you want `print!` or
-/// `println!` instead, which track the position for you.
-pub fn write_text<const N: usize>(mut offset: usize, text: &String<N>, color: u16,) -> usize {
-    for &byte in text.as_bytes() {
+/// This accepts a byte slice so both `String<N>` and runtime `&str` values
+/// can be printed without requiring the text length to be known at compile time.
+pub fn write_text(mut offset: usize, text: &[u8], color: u16) -> usize {
+    for &byte in text {
         if offset >= MAX_CELLS {
             scroll();
 
@@ -148,70 +148,71 @@ pub fn write_text<const N: usize>(mut offset: usize, text: &String<N>, color: u1
 
 /// Prints text at the current cursor position without a trailing newline.
 ///
-/// - `print!("text")` prints in white.
-/// - `print!("text", RED)` prints in the given color.
+/// Supports both compile-time string literals and runtime `&str` values.
 ///
-/// The text must be a string literal or a `const` string, because its
-/// length is needed at compile time to size the `String`.
+/// Examples:
+/// `print!(offset, "hello");`
+/// `print!(offset, "hello", WHITE);`
+/// `print!(offset, split_command[1].to_str(), WHITE);`
 #[macro_export]
 macro_rules! print {
     ($offset:ident, $text:expr) => {{
-        const LEN: usize = $text.len();
-
-        let string = $crate::vga_buffer::String::<LEN>::from($text);
-
-        $offset = $crate::vga_buffer::write_text($offset, &string, $crate::vga_buffer::WHITE,);
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            $text.as_bytes(),
+            $crate::vga_buffer::WHITE,
+        );
     }};
 
     ($offset:ident, $text:expr, $color:expr) => {{
-        const LEN: usize = $text.len();
-
-        let string = $crate::vga_buffer::String::<LEN>::from($text);
-
-        $offset = $crate::vga_buffer::write_text($offset, &string, $color,);
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            $text.as_bytes(),
+            $color,
+        );
     }};
 }
 
 /// Like `print!`, but moves to the next row afterwards.
 ///
-/// - `println!()` prints an empty line.
-/// - `println!("text")` prints white text, then a newline.
-/// - `println!("text", RED)` prints colored text, then a newline.
+/// Examples:
+/// `println!(offset, "hello");`
+/// `println!(offset, "hello", WHITE);`
 #[macro_export]
 macro_rules! println {
     ($offset:ident) => {{
-        const LEN: usize = 1;
-
-        let string = $crate::vga_buffer::String::<LEN>::from("\n");
-
-        $offset = $crate::vga_buffer::write_text($offset, &string, $crate::vga_buffer::WHITE,);
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            b"\n",
+            $crate::vga_buffer::WHITE,
+        );
     }};
 
     ($offset:ident, $text:expr) => {{
-        const LEN: usize = $text.len();
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            $text.as_bytes(),
+            $crate::vga_buffer::WHITE,
+        );
 
-        let string = $crate::vga_buffer::String::<LEN>::from($text);
-
-        $offset = $crate::vga_buffer::write_text($offset, &string, $crate::vga_buffer::WHITE,);
-
-        const NEWLINE_LEN: usize = 1;
-
-        let newline = $crate::vga_buffer::String::<NEWLINE_LEN>::from("\n");
-
-        $offset = $crate::vga_buffer::write_text($offset, &newline, $crate::vga_buffer::WHITE,);
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            b"\n",
+            $crate::vga_buffer::WHITE,
+        );
     }};
 
     ($offset:ident, $text:expr, $color:expr) => {{
-        const LEN: usize = $text.len();
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            $text.as_bytes(),
+            $color,
+        );
 
-        let string = $crate::vga_buffer::String::<LEN>::from($text);
-
-        $offset = $crate::vga_buffer::write_text($offset, &string, $color,);
-
-        const NEWLINE_LEN: usize = 1;
-
-        let newline = $crate::vga_buffer::String::<NEWLINE_LEN>::from("\n");
-
-        $offset = $crate::vga_buffer::write_text($offset, &newline, $crate::vga_buffer::WHITE,);
+        $offset = $crate::vga_buffer::write_text(
+            $offset,
+            b"\n",
+            $crate::vga_buffer::WHITE,
+        );
     }};
 }
