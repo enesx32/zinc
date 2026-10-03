@@ -14,10 +14,11 @@ use zcore_drivers::{
 };
 
 use zcore_constants::{
-    keys::ENTER_SCANCODE,
-    colors::{WHITE, GREEN, LIGHT_BLUE, CYAN},
+    colors::{CYAN, GREEN, LIGHT_BLUE, RED, WHITE, LIGHT_GRAY}, keys::ENTER_SCANCODE,
 };
+
 use zcore_types::string::BasicString;
+use brass::{ echo::echo, help::help };
 
 /// Number of rows the prompt takes up.
 const PROMPT_ROWS: usize = 3;
@@ -78,11 +79,18 @@ pub extern "C" fn _start() -> ! {
                 let split_command = command.split::<6>(b' ');
 
                 if split_command[0].to_str() == "echo" {
-                    print!(offset, split_command[1].to_str(), WHITE);
+                    echo(offset, split_command[1].to_str());
                 } else if split_command[0].to_str() == "clear" {
                     clear_screen(0);
+                } else if split_command[0].to_str() == "help" {
+                    help(offset);
                 } else {
-                    println!(offset, "Unknown command", WHITE);
+                    print!(offset, "Unknown command: {}\n", RED);
+                    print!(offset, command, WHITE);
+                    println!(offset, "\n", WHITE);
+                    print!(offset, "Run ", WHITE);
+                    print!(offset, "help", LIGHT_GRAY);
+                    print!(offset, "to display commands and how to use them", WHITE);
                 }
 
                 // Move to the next row.

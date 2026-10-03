@@ -3,12 +3,20 @@
 version = 4
 
 [[package]]
+name = "brass"
+version = "3.5.0"
+dependencies = [
+ "zcore-constants",
+ "zcore-drivers",
+]
+
+[[package]]
 name = "zcore-constants"
 version = "3.5.0"
 
 [[package]]
 name = "zcore-drivers"
-version = "3.4.0"
+version = "3.5.0"
 dependencies = [
  "zcore-constants",
  "zcore-types",
@@ -16,12 +24,13 @@ dependencies = [
 
 [[package]]
 name = "zcore-types"
-version = "3.4.0"
+version = "3.5.0"
 
 [[package]]
 name = "zinc-kernel"
-version = "3.4.0"
+version = "3.5.0"
 dependencies = [
+ "brass",
  "zcore-constants",
  "zcore-drivers",
  "zcore-types",

@@ -1,6 +1,6 @@
 [package]
 name = "zinc-kernel"
-version = "3.4.0"
+version = "3.5.0"
 edition = "2024"
 
 [[bin]]
@@ -13,3 +13,4 @@ bench = false
 zcore-drivers = { path = "../zcore/drivers" }
 zcore-types = { path = "../zcore/types" }
 zcore-constants = { path = "../zcore/constants" }
+brass = { path = "../shell" }

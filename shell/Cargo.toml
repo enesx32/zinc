@@ -1,0 +1,8 @@
+[package]
+name = "brass"
+version = "3.5.0"
+edition = "2024"
+
+[dependencies]
+zcore-drivers = { path = "../zcore/drivers" }
+zcore-constants = { path = "../zcore/constants" }
