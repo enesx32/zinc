@@ -14,6 +14,11 @@ A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots fr
 The zcore library provides drivers like the VGA buffer, Keyboard and PIT drivers<br/>
 it also gives types for `String` and `Basic String`<br/>
 
+## Default shell - Brass
+The brass shell provides only 2 commands right now <br/>
+* `echo <text>`
+* `help`
+
 ## How to install
 Download `zinc-os.iso` from the [Releases](https://github.com/enesx32/zinc/releases) page.
 
