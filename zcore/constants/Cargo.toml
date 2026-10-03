@@ -1,6 +1,4 @@
 [package]
-name = "zcore-types"
+name = "zcore-constants"
 version = "3.3.0"
 edition = "2024"
-
-[dependencies]

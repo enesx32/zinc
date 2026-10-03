@@ -1,28 +1,11 @@
 pub const VGA_BUFFER: *mut u16 = 0xb8000 as *mut u16;
 
-pub const BLACK: u16 = 0x0000;
-pub const BLUE: u16 = 0x0100;
-pub const GREEN: u16 = 0x0200;
-pub const CYAN: u16 = 0x0300;
-pub const RED: u16 = 0x0400;
-pub const MAGENTA: u16 = 0x0500;
-pub const BROWN: u16 = 0x0600;
-pub const LIGHT_GRAY: u16 = 0x0700;
-
-pub const DARK_GRAY: u16 = 0x0800;
-pub const LIGHT_BLUE: u16 = 0x0900;
-pub const LIGHT_GREEN: u16 = 0x0A00;
-pub const LIGHT_CYAN: u16 = 0x0B00;
-pub const LIGHT_RED: u16 = 0x0C00;
-pub const LIGHT_MAGENTA: u16 = 0x0D00;
-pub const YELLOW: u16 = 0x0E00;
 pub const WHITE: u16 = 0x0F00;
-
 pub const BLANK: u16 = 0x0720;
 
-const BUFFER_WIDTH: usize = 80;
-const BUFFER_HEIGHT: usize = 25;
-const MAX_CELLS: usize = BUFFER_WIDTH * BUFFER_HEIGHT;
+pub const BUFFER_WIDTH: usize = 80;
+pub const BUFFER_HEIGHT: usize = 25;
+pub const MAX_CELLS: usize = BUFFER_WIDTH * BUFFER_HEIGHT;
 
 pub use zcore_types::string::String;
 
@@ -52,6 +35,55 @@ pub fn scroll() {
             );
         }
     }
+}
+
+/// Writes one character with the given color into the VGA cell at `offset`.
+///
+/// `offset` is a cell index (`row * 80 + column`), not a byte offset.
+/// Offsets past the end of the screen are ignored.
+pub fn write_cell(offset: usize, character: u8, color: u16) {
+    if offset >= MAX_CELLS {
+        return;
+    }
+
+    unsafe {
+        core::ptr::write_volatile(VGA_BUFFER.add(offset), color | character as u16);
+    }
+}
+
+/// Clears the VGA cell at `offset` back to a blank space.
+///
+/// Offsets past the end of the screen are ignored.
+pub fn blank_cell(offset: usize) {
+    if offset >= MAX_CELLS {
+        return;
+    }
+
+    unsafe {
+        core::ptr::write_volatile(VGA_BUFFER.add(offset), BLANK);
+    }
+}
+
+/// Scrolls the screen up until `needed` cells fit from `offset` onwards.
+///
+/// Every scroll moves all rows up by one and blanks the last row, so
+/// everything on screen, including the cursor position, shifts up by
+/// one row (`BUFFER_WIDTH` cells).
+///
+/// Returns how many rows were scrolled. The caller must subtract
+/// `rows * BUFFER_WIDTH` from its own `offset` (and from any other saved
+/// positions) so they keep pointing at the same text.
+pub fn scroll_to_fit(offset: usize, needed: usize) -> usize {
+    let mut rows = 0;
+    let mut position = offset;
+
+    while position + needed > MAX_CELLS {
+        scroll();
+        position -= BUFFER_WIDTH;
+        rows += 1;
+    }
+
+    rows
 }
 
 /// Fills the screen with blank cells, starting at cell `start`.

@@ -10,7 +10,7 @@ A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots fr
 - Bootable ISO built by a small Python script, so no `xorriso` or `mkisofs` is needed
 
 ## Native API - Zcore
-The zcore library provides drivers like the VGA buffer and more are coming<br/>
+The zcore library provides drivers like the VGA buffer and Keyboard drivers<br/>
 it also gives types for `String` and `Basic String`<br/>
 lastly it has a `zcore/util` folder for general developing stuff
 
@@ -99,14 +99,16 @@ zinc/
 │   ├── drivers/
 │   │   ├── src/
 │   │   │   ├── lib.rs
-│   │   │   └── vga_buffer.rs
+│   │   │   ├── vga_buffer.rs
+│   │   │   └── keyboard.rs
 │   │   └── Cargo.toml
-│   ├── types/
+│   ├── constants/
 │   │   ├── src/
+│   │   │   ├── colors.rs
 │   │   │   ├── lib.rs
-│   │   │   └── string.rs
+│   │   │   └── keys.rs
 │   │   └── Cargo.toml
-│   └── util/
+│   └── types/
 │       ├── src/
 │       │   ├── lib.rs
 │       │   └── string.rs

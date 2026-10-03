@@ -1,7 +1,8 @@
 [package]
 name = "zcore-drivers"
-version = "3.1.0"
+version = "3.3.0"
 edition = "2024"
 
 [dependencies]
 zcore-types = { path = "../types" }
+zcore-constants = { path = "../constants" }

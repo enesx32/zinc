@@ -10,6 +10,7 @@ target = "x86_64-unknown-none"
 [target.x86_64-unknown-none]
 rustflags = [
     "-C", "link-arg=-Tkernel/linker.ld",
+    "-C", "relocation-model=static",
 ]
 EOF
 
