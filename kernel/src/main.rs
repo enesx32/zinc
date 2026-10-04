@@ -51,7 +51,7 @@ pub extern "C" fn _start() -> ! {
     let mut command_length = 0;
 
     // Print the Zinc OS banner.
-    println!(offset, "                 Zinc OS | v3.3.0", CYAN);
+    println!(offset, "                 Zinc OS | v3.8.0", CYAN);
     println!(offset);
     println!(offset);
 
