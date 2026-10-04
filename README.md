@@ -242,35 +242,3 @@ zinc/
 7. The Rust kernel initialises Zinc's global memory allocator.
 8. The Brass shell is started.
 9. Keyboard input is read and shell commands are executed.
-
-## Version 4.0.2
-
-Version 4 introduces Zinc's first global heap allocator and dynamic memory support.
-
-### 4.0.0
-
-* Added Zinc's global memory allocator
-* Added heap-backed `String`
-* Added dynamic shell command storage
-* Updated the kernel to use dynamic strings
-
-### 4.0.1
-
-* Fixed PIT driver issues
-
-### 4.0.2
-
-* Fixed Rust Analyzer issues
-* Cleaned up kernel code and comments
-* Updated project documentation
-
-## Limitations
-
-* BIOS boot only
-* No UEFI support
-* VGA text mode only
-* No filesystem yet
-* No user-mode programs yet
-* No process management yet
-* No persistent storage API yet
-* The bootloader currently loads the kernel from a fixed disk layout
