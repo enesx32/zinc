@@ -88,6 +88,10 @@ zinc/
 ├── .cargo/
 │   └── config.toml
 ├── .vscode/
+├── images/
+│   ├── help_example.png
+│   ├── unkown_command_example.png
+│   └── version.toml
 ├── boot/
 │   └── boot.asm
 ├── build/
