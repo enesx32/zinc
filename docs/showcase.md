@@ -15,6 +15,6 @@ By typing `help` into the terminal you will get this responce:
 ## Version
 
 And by entering `version` you will get a colourful <br/>
-interface displaying stuff like os, kernel, shell and more 
+interface displaying stuff like os, kernel, shell and more
 
 ![Version command example](./images/version.png)

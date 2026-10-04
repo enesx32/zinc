@@ -22,7 +22,7 @@ pub fn version(offset: usize) -> usize {
     print!(offset, "   Version           | ");
     print!(offset, "3", LIGHT_GREEN);
     print!(offset, ".");
-    print!(offset, "8", GREEN);
+    print!(offset, "9", GREEN);
     print!(offset, ".");
     print!(offset, "1", LIGHT_RED);
     println!(offset);
