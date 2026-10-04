@@ -7,8 +7,6 @@ pub const BUFFER_WIDTH: usize = 80;
 pub const BUFFER_HEIGHT: usize = 25;
 pub const MAX_CELLS: usize = BUFFER_WIDTH * BUFFER_HEIGHT;
 
-pub use zcore_types::string::String;
-
 /// Moves every row of the screen up by one and blanks the last row.
 ///
 /// Called automatically by `write_text` when text runs past the bottom
@@ -115,8 +113,9 @@ pub fn clear_screen(start: usize) {
 /// If the text reaches the bottom of the screen, the screen scrolls up one
 /// row and writing continues on the last row.
 ///
-/// This accepts a byte slice so both `String<N>` and runtime `&str` values
-/// can be printed without requiring the text length to be known at compile time.
+/// This accepts a byte slice so both Zinc's String and runtime `&str`
+/// values can be printed without requiring the text length to be known
+/// at compile time.
 pub fn write_text(mut offset: usize, text: &[u8], color: u16) -> usize {
     for &byte in text {
         if offset >= MAX_CELLS {

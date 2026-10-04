@@ -2,7 +2,7 @@
 //! Implements the `version` command for the shell.
 
 use zcore_drivers::{ println, print };
-use zcore_constants::colors::{ BROWN, GREEN, LIGHT_CYAN, LIGHT_GRAY, LIGHT_GREEN, LIGHT_RED };
+use zcore_constants::colors::{ BROWN, GREEN, LIGHT_GRAY, LIGHT_GREEN, LIGHT_RED };
 
 /// version command
 /// 
@@ -11,18 +11,18 @@ use zcore_constants::colors::{ BROWN, GREEN, LIGHT_CYAN, LIGHT_GRAY, LIGHT_GREEN
 pub fn version(offset: usize) -> usize {
     let mut offset = offset;
     print!(offset, "   Operating system  | ");
-    print!(offset, "Zinc OS", LIGHT_CYAN); 
+    print!(offset, "Zinc OS", LIGHT_GRAY); 
     println!(offset);
     print!(offset, "   Kernel            | ");
-    print!(offset, "Zink", LIGHT_CYAN);
+    print!(offset, "Zink", LIGHT_GRAY);
     println!(offset); 
     print!(offset, "   Shell             | ");
     print!(offset, "Brass", BROWN);
     println!(offset, "\n");
     print!(offset, "   Version           | ");
-    print!(offset, "3", LIGHT_GREEN);
+    print!(offset, "4", LIGHT_GREEN);
     print!(offset, ".");
-    print!(offset, "9", GREEN);
+    print!(offset, "0", GREEN);
     print!(offset, ".");
     print!(offset, "2", LIGHT_RED);
     println!(offset);

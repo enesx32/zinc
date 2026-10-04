@@ -1,5 +1,6 @@
 [package]
-name = "zcore-constants"
+name = "zcore-memory"
 version = "4.0.2"
 edition = "2024"
 
+[dependencies]
