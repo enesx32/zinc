@@ -8,10 +8,10 @@ use zcore_drivers::{
 
 /// echo command
 /// 
-/// `echo` is a simple command that uses 1 argument:
+/// `echo` is a simple command that uses 1 or 2 arguments:
 /// `echo <text>` - prints the text to the standard output
 pub fn echo(offset: usize, text: &str) -> usize {
     let mut offset = offset;
-    println!(offset, "{}\n", WHITE);
+    println!(offset, text, WHITE);
     offset
 }
