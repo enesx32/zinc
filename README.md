@@ -1,6 +1,8 @@
 # **zinc-os**
-![Version](https://img.shields.io/badge/version-v3.9.0-blue)
-[Showcase](./docs/showcase.md)
+![Version](https://img.shields.io/badge/version-v3.9.2-blue) <br/>
+<a href="./docs/showcase.md">
+  <img src="https://img.shields.io/badge/%20View%20Showcase-FF9900?style=for-the-badge" />
+</a>
 
 A tiny hobby operating system written in Rust and x86-64 assembly. Zinc boots from a custom BIOS bootloader, switches the CPU into 64-bit long mode, and runs a Rust kernel
 
@@ -92,6 +94,8 @@ zinc/
 │   ├── help_example.png
 │   ├── unkown_command_example.png
 │   └── version.toml
+├── docs/
+│   └── showcase.md
 ├── boot/
 │   └── boot.asm
 ├── build/

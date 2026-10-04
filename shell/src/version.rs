@@ -24,7 +24,7 @@ pub fn version(offset: usize) -> usize {
     print!(offset, ".");
     print!(offset, "9", GREEN);
     print!(offset, ".");
-    print!(offset, "1", LIGHT_RED);
+    print!(offset, "2", LIGHT_RED);
     println!(offset);
     print!(offset, "   Architecture      | ");
     print!(offset, "x86-64", LIGHT_GRAY);
