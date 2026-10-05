@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 zcore-drivers = { path = "../zcore/drivers" }
 zcore-constants = { path = "../zcore/constants" }
+zcore-fs = { path = "../zcore/fs" }

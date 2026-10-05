@@ -8,6 +8,7 @@ version = "4.0.2"
 dependencies = [
  "zcore-constants",
  "zcore-drivers",
+ "zcore-fs",
 ]
 
 [[package]]
@@ -20,6 +21,13 @@ version = "4.0.2"
 dependencies = [
  "zcore-constants",
  "zcore-types",
+]
+
+[[package]]
+name = "zcore-fs"
+version = "0.1.0"
+dependencies = [
+ "zcore-drivers",
 ]
 
 [[package]]
@@ -37,6 +45,7 @@ dependencies = [
  "brass",
  "zcore-constants",
  "zcore-drivers",
+ "zcore-fs",
  "zcore-memory",
  "zcore-types",
 ]

@@ -17,3 +17,9 @@ pub mod keyboard;
 /// Provides functions for reading and writing to the PIT chip.
 /// and functions for sleeping the CPU for a given amount of time.
 pub mod time;
+
+/// Disk Drivers
+/// 
+/// Provides functionaliy to modify the disk
+/// [Read, Write]
+pub mod disk;

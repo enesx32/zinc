@@ -20,4 +20,4 @@ fi
 
 $PY isogen.py build/boot_image.bin build/zinc-os.iso
 
-qemu-system-x86_64 -cdrom build/zinc-os.iso -boot d -no-reboot -d in_asm,int,cpu_reset -D build/qemu.log
+qemu-system-x86_64 -cdrom build/zinc-os.iso -drive format=raw,file=build/zinc-test.img

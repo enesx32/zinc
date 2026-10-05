@@ -13,17 +13,20 @@ use core::panic::PanicInfo;
 
 // Imports the colours used by the kernel and shell.
 use zcore_constants::{
-    colors::{CYAN, GREEN, LIGHT_BLUE, LIGHT_GRAY, LIGHT_RED, WHITE},
+    colors::{ CYAN, GREEN, LIGHT_BLUE, LIGHT_GRAY, LIGHT_RED, WHITE },
     keys::ENTER_SCANCODE,
 };
 
 // Imports keyboard input, timing, VGA output, and the print macros.
 use zcore_drivers::{
-    keyboard::{read_key, scancode_to_ascii},
+    keyboard::{ read_key, scancode_to_ascii },
     time::sleep_millis,
     vga_buffer::*,
     print, println,
 };
+
+// Imports Zinc's filesystem functions.
+use zcore_fs::ROOT_DIRECTORY_SECTOR;
 
 // Imports Zinc's global memory allocator.
 use zcore_memory::ALLOCATOR;
@@ -33,22 +36,52 @@ use zcore_types::string::String;
 
 // Imports the commands provided by the Brass shell.
 use brass::{
+    cd::cd,
     echo::echo,
     help::help,
+    list::ls,
     version::version,
 };
 
-// The number of rows needed to display a new shell prompt.
+/// Number of rows needed to display a new shell prompt.
 const PROMPT_ROWS: usize = 3;
 
-// The number of spaces inserted when Tab is pressed.
+/// The number of spaces inserted when Tab is pressed.
 const TAB_WIDTH: usize = 4;
 
-// The maximum number of characters allowed in one command.
+/// The maximum number of characters allowed in one command.
 const MAX_COMMAND_LENGTH: usize = 128;
 
-// The number of columns used to indent command output.
+/// The number of columns used to indent command output.
 const COMMAND_OUTPUT_INDENT: usize = 0;
+
+/// The number of sectors available on the test disk.
+const TEST_DISK_SECTORS: u32 = 2048;
+
+/// Updates the displayed current path after changing directories.
+fn update_path(path: &mut String, target: &str) {
+    // Go to the root path.
+    if target == "/" {
+        path.clear();
+        path.push('/');
+        return;
+    }
+
+    // Move back to the root path from a child directory.
+    if target == ".." {
+        path.clear();
+        path.push('/');
+        return;
+    }
+
+    // Remove the leading slash from an absolute path.
+    let name = target.strip_prefix('/').unwrap_or(target);
+
+    // Update the path.
+    path.clear();
+    path.push('/');
+    path.push_str(name);
+}
 
 /// Kernel entry point.
 ///
@@ -70,8 +103,8 @@ pub extern "C" fn _start() -> ! {
     // Clear the screen before starting the kernel.
     clear_screen(0);
 
-    // Create a dynamic String to test Zinc's new String implementation.
-    let banner = String::from("                             Zinc OS | v3.9.2");
+    // Test the new dynamic String.
+    let banner = String::from("Zinc OS | v4.0.2");
 
     // Show that the kernel has started.
     println!(offset, "Kernel started", GREEN);
@@ -79,14 +112,20 @@ pub extern "C" fn _start() -> ! {
     // Print the dynamic String to test that it works with the VGA driver.
     println!(offset, banner.to_str(), CYAN);
 
-    // Wait briefly so the kernel startup message can be seen.
-    sleep_millis(800);
+    // Wait briefly so the startup results can be seen.
+    sleep_millis(1500);
 
     // Clear the startup messages from the screen.
     clear_screen(0);
 
     // Start writing from the top-left corner again.
     offset = 0;
+
+    // Store the current directory sector.
+    let mut current_directory = ROOT_DIRECTORY_SECTOR;
+
+    // Store the current directory path.
+    let mut current_path = String::from("/");
 
     // Display the Zinc OS banner.
     println!(offset, banner.to_str(), CYAN);
@@ -98,7 +137,13 @@ pub extern "C" fn _start() -> ! {
     println!(offset);
 
     // Print the shell prompt header.
-    println!(offset, "+- enesx32[/]", LIGHT_BLUE);
+    print!(offset, "+- enesx32[", LIGHT_BLUE);
+
+    // Print the current directory path.
+    print!(offset, current_path.to_str(), LIGHT_BLUE);
+
+    // Finish the shell prompt header.
+    println!(offset, "]", LIGHT_BLUE);
 
     // Print the vertical part of the shell prompt.
     println!(offset, "|", LIGHT_BLUE);
@@ -157,6 +202,40 @@ pub extern "C" fn _start() -> ! {
                         // Run the version command.
                         offset = version(offset);
 
+                    // Check whether the command is "ls".
+                    } else if split_command[0].to_str() == "ls" {
+                        // List the current directory.
+                        offset = ls(offset, current_directory);
+
+                    // Check whether the command is "cd".
+                    } else if split_command[0].to_str() == "cd" {
+                        // Make sure a directory was supplied.
+                        if split_command.len() < 2 {
+                            // Tell the user how to use cd.
+                            println!(offset, "Usage: cd <directory>", LIGHT_RED);
+                        } else {
+                            // Get the requested directory.
+                            let target = split_command[1].to_str();
+
+                            // Try to change directory.
+                            if let Some(directory) = cd(current_directory, target) {
+                                // Store the new directory sector.
+                                current_directory = directory;
+
+                                // Update the displayed path.
+                                update_path(&mut current_path, target);
+                            } else {
+                                // Tell the user that the directory was not found.
+                                print!(offset, "cd: ", LIGHT_RED);
+
+                                // Print the requested directory.
+                                print!(offset, target, WHITE);
+
+                                // Explain the error.
+                                println!(offset, ": directory not found", LIGHT_RED);
+                            }
+                        }
+
                     // The command does not match any known command.
                     } else {
                         // Tell the user that the command was not found.
@@ -195,7 +274,13 @@ pub extern "C" fn _start() -> ! {
                 offset -= rows * BUFFER_WIDTH;
 
                 // Print the new shell prompt header.
-                println!(offset, "+- enesx32[/]", LIGHT_BLUE);
+                print!(offset, "+- enesx32[", LIGHT_BLUE);
+
+                // Print the current directory path.
+                print!(offset, current_path.to_str(), LIGHT_BLUE);
+
+                // Finish the shell prompt header.
+                println!(offset, "]", LIGHT_BLUE);
 
                 // Print the vertical part of the new prompt.
                 println!(offset, "|", LIGHT_BLUE);
